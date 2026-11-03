@@ -31,76 +31,64 @@ export default function CosmicCanvas(): React.JSX.Element {
     };
     window.addEventListener('resize', handleResize);
 
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const particles: Particle[] = [];
-    const count = Math.min(Math.floor(width / 18), 75);
+    const count = reducedMotion ? 0 : Math.min(Math.floor(width / 48), 28);
 
     for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: Math.random() * 2 + 0.8,
+        radius: Math.random() * 1.2 + 0.4,
         color: i % 3 === 0 ? '#00ffc8' : (i % 3 === 1 ? '#e8c36a' : '#b026ff'),
-        vx: (Math.random() - 0.5) * 0.45,
-        vy: (Math.random() - 0.5) * 0.45,
-        alpha: Math.random() * 0.7 + 0.3,
-        pulseSpeed: Math.random() * 0.02 + 0.01
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: (Math.random() - 0.5) * 0.18,
+        alpha: Math.random() * 0.35 + 0.15,
+        pulseSpeed: 0
       });
     }
 
-    let mouseX = -1000;
-    let mouseY = -1000;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-
-    let animId: number;
+    let animId = 0;
+    let running = true;
     const render = () => {
+      if (!running) return;
       ctx.clearRect(0, 0, width, height);
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
-
         p.x += p.vx;
         p.y += p.vy;
-
         if (p.x < 0) p.x = width;
         if (p.x > width) p.x = 0;
         if (p.y < 0) p.y = height;
         if (p.y > height) p.y = 0;
 
-        const dx = p.x - mouseX;
-        const dy = p.y - mouseY;
-        const dist = Math.hypot(dx, dy);
-        if (dist < 120 && dist > 0) {
-          const force = ((120 - dist) / 120) * 0.6;
-          p.x += (dx / dist) * force;
-          p.y += (dy / dist) * force;
-        }
-
-        p.alpha += Math.sin(Date.now() * p.pulseSpeed) * 0.005;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.globalAlpha = p.alpha;
         ctx.fillStyle = p.color;
-        ctx.globalAlpha = Math.min(Math.max(p.alpha, 0.1), 0.85);
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = p.color;
-        ctx.fill();
-        ctx.shadowBlur = 0;
+        ctx.fillRect(p.x, p.y, p.radius, p.radius);
       }
 
       ctx.globalAlpha = 1;
       animId = requestAnimationFrame(render);
     };
 
-    animId = requestAnimationFrame(render);
+    const handleVisibility = () => {
+      if (document.hidden) {
+        running = false;
+        cancelAnimationFrame(animId);
+      } else if (!running && particles.length) {
+        running = true;
+        animId = requestAnimationFrame(render);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    if (particles.length) animId = requestAnimationFrame(render);
 
     return () => {
+      running = false;
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('visibilitychange', handleVisibility);
       cancelAnimationFrame(animId);
     };
   }, []);
@@ -109,11 +97,6 @@ export default function CosmicCanvas(): React.JSX.Element {
     <>
       <div className="sky-wash pointer-events-none" aria-hidden="true" />
       <div className="aurora-veil pointer-events-none" id="aurora-layer" aria-hidden="true" />
-      <div className="mist-container pointer-events-none" aria-hidden="true">
-        <div className="mist-particle mist-1" />
-        <div className="mist-particle mist-2" />
-        <div className="mist-particle mist-3" />
-      </div>
       <canvas
         ref={canvasRef}
         id="cosmic-canvas"

@@ -1,5 +1,11 @@
 ﻿import styled, { keyframes } from 'styled-components';
 
+const screenDrift = keyframes`
+  0% { transform: translate3d(0, 0, 0) rotate(var(--tilt)); }
+  50% { transform: translate3d(6px, -14px, 0) rotate(var(--tilt)); }
+  100% { transform: translate3d(-5px, 6px, 0) rotate(var(--tilt)); }
+`;
+
 const holoScan = keyframes`
   0% { top: 0; opacity: 0; }
   20% { opacity: 1; }
@@ -63,12 +69,39 @@ export const ArtSceneWrapper = styled.div`
   height: 100%;
 `;
 
+export const VaultStage = styled.div`
+  position: absolute;
+  inset: 0;
+`;
+
 export const VaultImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
   filter: contrast(1.08) brightness(0.9);
+`;
+
+export const FloatScreen = styled.span<{ $top: string; $left: string; $w: string; $h: string; $tilt: string; $delay: string; $duration: string }>`
+  --tilt: ${p => p.$tilt};
+  position: absolute;
+  top: ${p => p.$top};
+  left: ${p => p.$left};
+  width: ${p => p.$w};
+  height: ${p => p.$h};
+  border-radius: 4px;
+  border: 1px solid rgba(120, 255, 230, 0.65);
+  background:
+    linear-gradient(180deg, rgba(0, 255, 210, 0.18), rgba(80, 40, 180, 0.12)),
+    repeating-linear-gradient(180deg, rgba(180, 255, 245, 0.22) 0 1px, transparent 1px 7px);
+  box-shadow: 0 0 16px rgba(0, 255, 210, 0.35), inset 0 0 12px rgba(0, 255, 210, 0.2);
+  animation: ${screenDrift} ${p => p.$duration} ease-in-out ${p => p.$delay} infinite alternate;
+  pointer-events: none;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    transform: rotate(var(--tilt));
+  }
 `;
 
 export const VaultScrim = styled.div`
@@ -102,18 +135,17 @@ export const VaultCaption = styled.p`
 
 export const HoloBadge = styled.div`
   position: absolute;
+  z-index: 4;
   bottom: 3.5rem;
   left: 2rem;
   display: flex;
   align-items: center;
   gap: 1.25rem;
-  padding: 0.85rem 1.25rem;
-  background: rgba(9, 14, 28, 0.85);
-  border: 1px solid rgba(0, 255, 200, 0.4);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  padding: 1.05rem 1.4rem;
+  background: rgba(6, 12, 24, 0.96);
+  border: 1.5px solid rgba(0, 255, 200, 0.85);
   border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(0, 255, 200, 0.25);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 28px rgba(0, 255, 200, 0.45);
 
   @media (max-width: 768px) {
     left: 0.75rem !important;
@@ -167,10 +199,11 @@ export const HoloBadgeInfo = styled.div`
 
 export const BadgeRole = styled.span`
   font-family: var(--font-kicker, 'Orbitron', monospace);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  color: var(--primary-cyan, #00ffc8);
+  font-size: 0.92rem;
+  letter-spacing: 0.1em;
+  color: #5dffe0;
   font-weight: 700;
+  text-shadow: 0 0 12px rgba(0, 255, 200, 0.55);
 
   @media (max-width: 768px) {
     font-size: 0.68rem;
@@ -179,8 +212,9 @@ export const BadgeRole = styled.span`
 
 export const BadgeOrg = styled.span`
   font-family: var(--font-body, 'Outfit', sans-serif);
-  font-size: 0.8rem;
-  color: var(--text-muted, #cbd5e1);
+  font-size: 0.95rem;
+  color: #f8fafc;
+  margin-top: 0.15rem;
 
   @media (max-width: 768px) {
     font-size: 0.72rem;
@@ -188,10 +222,11 @@ export const BadgeOrg = styled.span`
 `;
 
 export const BadgeLocation = styled.div`
-  margin-top: 0.35rem;
-  font-size: 0.72rem;
-  color: var(--accent-gold, #e8c36a);
+  margin-top: 0.4rem;
+  font-size: 0.82rem;
+  color: #ffd978;
   font-family: var(--font-kicker, 'Orbitron', monospace);
+  text-shadow: 0 0 10px rgba(232, 195, 106, 0.35);
 
   @media (max-width: 768px) {
     font-size: 0.65rem;

@@ -198,7 +198,6 @@ export const RealmCard = styled.article`
   @media (max-width: 768px) {
     width: 100% !important;
     max-width: 100% !important;
-    &:hover { transform: none; }
   }
 `;
 
@@ -279,13 +278,6 @@ export const MediaWrap = styled.div`
   overflow: hidden;
   margin-bottom: 1.25rem;
   background: #090e1c;
-  cursor: pointer;
-  transition: transform 260ms ease, box-shadow 260ms ease;
-
-  &:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 16px rgba(0, 255, 200, 0.25);
-  }
 `;
 
 export const MediaPattern = styled.div`
@@ -373,9 +365,13 @@ export const ArtifactTitle = styled.h2`
 export const ArtifactDesc = styled.p`
   font-size: 0.9rem;
   color: var(--text-muted, #cbd5e1);
-  line-height: 1.6;
+  line-height: 1.45;
   margin-bottom: 1.25rem;
   flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 export const TechStackRow = styled.div`
@@ -436,7 +432,7 @@ export const LiveLinkButton = styled.a`
   }
 `;
 
-export const CodexButton = styled.button`
+export const CodexButton = styled.a`
   flex: 1 1 auto;
   display: inline-flex;
   align-items: center;
@@ -454,6 +450,7 @@ export const CodexButton = styled.button`
   transition: var(--transition-smooth, 280ms ease);
   cursor: pointer;
   white-space: nowrap;
+  text-decoration: none;
 
   &:hover {
     background: rgba(255, 255, 255, 0.15);

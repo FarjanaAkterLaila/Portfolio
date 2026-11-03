@@ -11,6 +11,8 @@ export interface Project {
   categoryBadge: string;
   role: string;
   description: string;
+  summary: string;
+  image: string;
   stack: string[];
   metrics: string[];
   highlights: string[];
@@ -37,7 +39,6 @@ export interface Article {
 
 export interface NavItem {
   id: ViewId;
-  num: string;
   label: string;
 }
 

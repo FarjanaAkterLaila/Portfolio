@@ -2,7 +2,7 @@
 
 const sigilPulse = keyframes`
   0%, 100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.15) rotate(90deg); }
+  50% { transform: scale(1.12) rotate(90deg); }
 `;
 
 const waveEqualize = keyframes`
@@ -24,8 +24,8 @@ export const NavHeader = styled.header`
   height: var(--nav-height, 4.75rem);
   z-index: 50;
   background: rgba(3, 6, 13, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   transition: var(--transition-smooth, 280ms ease);
 
@@ -188,13 +188,6 @@ export const NavLinkItem = styled.a<{ $active?: boolean }>`
   }
 `;
 
-export const NavNum = styled.span<{ $active?: boolean }>`
-  font-family: var(--font-mono, 'JetBrains Mono', monospace);
-  font-size: 0.65rem;
-  color: ${props => props.$active ? 'var(--primary-cyan, #00ffc8)' : 'var(--accent-gold, #e8c36a)'};
-  opacity: ${props => props.$active ? '1' : '0.65'};
-`;
-
 export const NavText = styled.span`
   font-size: 0.85rem;
 `;
@@ -340,8 +333,8 @@ export const MobileDrawer = styled.div<{ $open?: boolean }>`
   max-width: calc(100vw - 1.5rem);
   background: rgba(9, 14, 28, 0.96);
   border: 1px solid var(--border-cyan, rgba(0, 255, 200, 0.35));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-radius: 14px;
   padding: 1.25rem;
   display: ${props => props.$open ? 'block' : 'none'};

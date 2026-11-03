@@ -13,7 +13,6 @@ import {
   BrandRole,
   NavLinks,
   NavLinkItem,
-  NavNum,
   NavText,
   NavActions,
   AudioButton,
@@ -38,7 +37,6 @@ interface NavbarProps {
 
 interface NavItemConfig {
   id: ViewId;
-  num: string;
   label: string;
   path: string;
 }
@@ -54,12 +52,12 @@ export default function Navbar({
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navItems: NavItemConfig[] = [
-    { id: 'about', num: '01', label: 'About', path: '/' },
-    { id: 'projects', num: '02', label: 'Projects', path: '/projects' },
-    { id: 'personal', num: '03', label: 'Personal', path: '/personal' },
-    { id: 'blog', num: '04', label: 'Transmissions', path: '/blog' },
-    { id: 'contact', num: '05', label: 'Contact', path: '/contact' },
-    { id: 'cv', num: '06', label: 'Dossier (CV)', path: '/cv' },
+    { id: 'about', label: 'About', path: '/' },
+    { id: 'projects', label: 'Projects', path: '/projects' },
+    { id: 'personal', label: 'Personal', path: '/personal' },
+    { id: 'blog', label: 'Transmissions', path: '/blog' },
+    { id: 'contact', label: 'Contact', path: '/contact' },
+    { id: 'cv', label: 'Dossier (CV)', path: '/cv' },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: ViewId) => {
@@ -97,7 +95,6 @@ export default function Navbar({
                 $active={activeView === item.id}
                 onClick={(e) => handleNavClick(e, item.id)}
               >
-                <NavNum $active={activeView === item.id}>{item.num}</NavNum>
                 <NavText>{item.label}</NavText>
               </NavLinkItem>
             ))}
@@ -180,12 +177,12 @@ export default function Navbar({
       {/* Mobile Navigation Drawer */}
       <MobileDrawer $open={mobileOpen} id="mobile-drawer">
         <MobileDrawerContent>
-          <MobileNavLink href="/" $active={activeView === 'about'} onClick={(e) => handleNavClick(e, 'about')}>01. About // The Bio-Archive</MobileNavLink>
-          <MobileNavLink href="/projects" $active={activeView === 'projects'} onClick={(e) => handleNavClick(e, 'projects')}>02. Projects // Citadel of Xenotech</MobileNavLink>
-          <MobileNavLink href="/personal" $active={activeView === 'personal'} onClick={(e) => handleNavClick(e, 'personal')}>03. Personal // The Lumina Glades</MobileNavLink>
-          <MobileNavLink href="/blog" $active={activeView === 'blog'} onClick={(e) => handleNavClick(e, 'blog')}>04. Transmissions // Subspace Logs</MobileNavLink>
-          <MobileNavLink href="/contact" $active={activeView === 'contact'} onClick={(e) => handleNavClick(e, 'contact')}>05. Contact // Quantum Uplink</MobileNavLink>
-          <MobileNavLink href="/cv" $active={activeView === 'cv'} onClick={(e) => handleNavClick(e, 'cv')}>06. Dossier (Full CV)</MobileNavLink>
+          <MobileNavLink href="/" $active={activeView === 'about'} onClick={(e) => handleNavClick(e, 'about')}>About // The Bio-Archive</MobileNavLink>
+          <MobileNavLink href="/projects" $active={activeView === 'projects'} onClick={(e) => handleNavClick(e, 'projects')}>Projects // Citadel of Xenotech</MobileNavLink>
+          <MobileNavLink href="/personal" $active={activeView === 'personal'} onClick={(e) => handleNavClick(e, 'personal')}>Personal // The Lumina Glades</MobileNavLink>
+          <MobileNavLink href="/blog" $active={activeView === 'blog'} onClick={(e) => handleNavClick(e, 'blog')}>Transmissions // Subspace Logs</MobileNavLink>
+          <MobileNavLink href="/contact" $active={activeView === 'contact'} onClick={(e) => handleNavClick(e, 'contact')}>Contact // Quantum Uplink</MobileNavLink>
+          <MobileNavLink href="/cv" $active={activeView === 'cv'} onClick={(e) => handleNavClick(e, 'cv')}>Dossier (Full CV)</MobileNavLink>
         </MobileDrawerContent>
       </MobileDrawer>
     </NavHeader>

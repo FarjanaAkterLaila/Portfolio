@@ -5,7 +5,9 @@ import {
   SplitContainer,
   ArtPane,
   ArtSceneWrapper,
+  VaultStage,
   VaultImage,
+  FloatScreen,
   VaultScrim,
   VaultCaption,
   HoloBadge,
@@ -63,8 +65,14 @@ export default function AboutSection(): React.JSX.Element {
           {/* Left Side: Atmospheric Alien Vault Artwork & Holographic Avatar */}
           <ArtPane>
             <ArtSceneWrapper>
-              <VaultImage src="/alien_vault.jpg" alt="Ancient Alien Archive Vault with glowing data codex" />
-              <VaultScrim />
+              <VaultStage>
+                <VaultImage src="/alien_vault.jpg" alt="Ancient Alien Archive Vault with glowing data codex" />
+                <VaultScrim />
+                <FloatScreen aria-hidden="true" $top="38%" $left="6%" $w="54px" $h="36px" $tilt="-8deg" $delay="-1s" $duration="8s" />
+                <FloatScreen aria-hidden="true" $top="52%" $left="10%" $w="42px" $h="28px" $tilt="6deg" $delay="-4s" $duration="10s" />
+                <FloatScreen aria-hidden="true" $top="58%" $left="62%" $w="48px" $h="32px" $tilt="-4deg" $delay="-2s" $duration="9s" />
+                <FloatScreen aria-hidden="true" $top="48%" $left="74%" $w="36px" $h="46px" $tilt="10deg" $delay="-6s" $duration="11s" />
+              </VaultStage>
               
               {/* Holographic Engineer Card overlay */}
               <HoloBadge>

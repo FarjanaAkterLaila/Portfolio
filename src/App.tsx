@@ -8,10 +8,11 @@ import PersonalSection from './components/PersonalSection';
 import BlogSection from './components/BlogSection';
 import ContactSection from './components/ContactSection';
 import CvSection from './components/CvSection';
-import ProjectModal from './components/ProjectModal';
+import ProjectSpecPage from './components/ProjectSpecPage';
 import Footer from './components/Footer';
 import { AppViewport } from './styles/app.styles';
 import { ViewId, AtmosphereTheme } from './types';
+import { PROJECT_CODEX } from './data/projectsData';
 
 const ATMOSPHERES: AtmosphereTheme[] = [
   'theme-default',
@@ -21,20 +22,31 @@ const ATMOSPHERES: AtmosphereTheme[] = [
 
 const VALID_VIEWS: ViewId[] = ['about', 'projects', 'personal', 'blog', 'contact', 'cv'];
 
-export const resolveViewFromUrl = (): ViewId => {
-  // Check pathname first (e.g. /projects, /cv, /personal, /contact, /blog, /transmissions, /about or /)
+export interface AppRoute {
+  view: ViewId;
+  projectId: string | null;
+}
+
+export const resolveRoute = (): AppRoute => {
   let path = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
 
-  // Backward compatibility fallback for hash links (e.g. /#cv, /#projects)
   if (!path && window.location.hash) {
     path = window.location.hash.replace(/^#\/?/, '').toLowerCase();
   }
 
   if (path === 'transmissions') path = 'blog';
-  if (!path || path === 'about') return 'about';
 
-  return VALID_VIEWS.includes(path as ViewId) ? (path as ViewId) : 'about';
+  const [head, slug] = path.split('/');
+  if (head === 'projects' && slug && PROJECT_CODEX[slug]) {
+    return { view: 'projects', projectId: slug };
+  }
+
+  if (!head || head === 'about' || head === 'home') return { view: 'about', projectId: null };
+  if (VALID_VIEWS.includes(head as ViewId)) return { view: head as ViewId, projectId: null };
+  return { view: 'about', projectId: null };
 };
+
+export const resolveViewFromUrl = (): ViewId => resolveRoute().view;
 
 export const getPathForView = (viewId: ViewId): string => {
   return viewId === 'about' ? '/' : `/${viewId}`;
@@ -43,9 +55,9 @@ export const getPathForView = (viewId: ViewId): string => {
 export default function App(): React.JSX.Element {
   const { isPlaying, toggleAudio, playSfx } = useCosmicAudio();
 
-  const [activeView, setActiveView] = useState<ViewId>(() => resolveViewFromUrl());
+  const [activeView, setActiveView] = useState<ViewId>(() => resolveRoute().view);
+  const [projectId, setProjectId] = useState<string | null>(() => resolveRoute().projectId);
   const [atmosphereIndex, setAtmosphereIndex] = useState<number>(0);
-  const [selectedProjectCodex, setSelectedProjectCodex] = useState<string | null>(null);
 
   // Sync atmosphere with body class
   useEffect(() => {
@@ -61,17 +73,18 @@ export default function App(): React.JSX.Element {
   // Clean up legacy hash if someone arrives via an old hash link
   useEffect(() => {
     if (window.location.hash) {
-      const initialView = resolveViewFromUrl();
-      const cleanPath = getPathForView(initialView);
-      window.history.replaceState({ viewId: initialView }, '', cleanPath);
+      const initial = resolveRoute();
+      const cleanPath = initial.projectId ? `/projects/${initial.projectId}` : getPathForView(initial.view);
+      window.history.replaceState({ viewId: initial.view, projectId: initial.projectId }, '', cleanPath);
     }
   }, []);
 
   // Handle Browser Back / Forward buttons (HTML5 popstate)
   useEffect(() => {
     const handlePopState = () => {
-      const resolved = resolveViewFromUrl();
-      setActiveView(resolved);
+      const resolved = resolveRoute();
+      setActiveView(resolved.view);
+      setProjectId(resolved.projectId);
       window.scrollTo(0, 0);
     };
     window.addEventListener('popstate', handlePopState);
@@ -81,13 +94,24 @@ export default function App(): React.JSX.Element {
   // HTML5 History API Navigation
   const handleNavigate = useCallback((viewId: ViewId) => {
     setActiveView(viewId);
+    setProjectId(null);
     const targetPath = getPathForView(viewId);
     if (window.location.pathname !== targetPath) {
-      window.history.pushState({ viewId }, '', targetPath);
+      window.history.pushState({ viewId, projectId: null }, '', targetPath);
     }
     window.scrollTo(0, 0);
     playSfx('warp');
   }, [playSfx]);
+
+  const openProject = useCallback((id: string) => {
+    const targetPath = `/projects/${id}`;
+    setActiveView('projects');
+    setProjectId(id);
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({ viewId: 'projects', projectId: id }, '', targetPath);
+    }
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleCycleAtmosphere = useCallback(() => {
     setAtmosphereIndex((prev) => (prev + 1) % ATMOSPHERES.length);
@@ -112,9 +136,16 @@ export default function App(): React.JSX.Element {
       {/* Dynamic Realm Views */}
       <AppViewport id="realm-viewport">
         {activeView === 'about' && <AboutSection />}
-        {activeView === 'projects' && (
+        {activeView === 'projects' && !projectId && (
           <ProjectsSection
-            onOpenCodex={(projectKey: string) => setSelectedProjectCodex(projectKey)}
+            onOpenSpec={openProject}
+            playSfx={playSfx}
+          />
+        )}
+        {activeView === 'projects' && projectId && (
+          <ProjectSpecPage
+            projectKey={projectId}
+            onBack={() => handleNavigate('projects')}
             playSfx={playSfx}
           />
         )}
@@ -123,13 +154,6 @@ export default function App(): React.JSX.Element {
         {activeView === 'contact' && <ContactSection playSfx={playSfx} />}
         {activeView === 'cv' && <CvSection />}
       </AppViewport>
-
-      {/* Project Codex Modal */}
-      <ProjectModal
-        projectKey={selectedProjectCodex}
-        onClose={() => setSelectedProjectCodex(null)}
-        playSfx={playSfx}
-      />
 
       {/* Global Footer */}
       <Footer onNavigate={handleNavigate} />

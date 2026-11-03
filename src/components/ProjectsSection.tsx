@@ -40,11 +40,11 @@ import {
 } from '../styles/projects.styles';
 
 interface ProjectsSectionProps {
-  onOpenCodex: (projectKey: string) => void;
+  onOpenSpec: (projectKey: string) => void;
   playSfx: (type?: SfxType) => void;
 }
 
-export default function ProjectsSection({ onOpenCodex, playSfx }: ProjectsSectionProps): React.JSX.Element {
+export default function ProjectsSection({ onOpenSpec, playSfx }: ProjectsSectionProps): React.JSX.Element {
   const [filter, setFilter] = useState<string>('all');
 
   const handleFilterClick = (newFilter: string) => {
@@ -79,7 +79,7 @@ export default function ProjectsSection({ onOpenCodex, playSfx }: ProjectsSectio
           <CitadelContent>
             <CitadelKicker>High Spire of Xenotech</CitadelKicker>
             <CitadelTitle>PROJECTS &amp; ARTIFACTS</CitadelTitle>
-            <CitadelSubtitle>Banners of engineered systems hung in the crystalline citadel. Select any artifact to inspect its codex.</CitadelSubtitle>
+            <CitadelSubtitle>Select a system to open its spec.</CitadelSubtitle>
 
             {/* Category Filter Pills */}
             <FilterPills id="project-filters">
@@ -135,7 +135,7 @@ export default function ProjectsSection({ onOpenCodex, playSfx }: ProjectsSectio
                     <CornerSvg $position="br" viewBox="0 0 56 56" fill="none"><path d="M3 30V9.5C3 5.9 5.9 3 9.5 3H30" stroke="currentColor" strokeWidth="1.2" /><circle cx="9" cy="9" r="2" fill="currentColor" /></CornerSvg>
 
                     <MediaWrap>
-                      <MediaPattern style={{ backgroundImage: `url('/alien_bg.jpg')` }}>
+                      <MediaPattern style={{ backgroundImage: `url('${item.image}')` }}>
                         <HoloPill>
                           <BadgeCode>{item.id.toUpperCase()}</BadgeCode>
                           <BadgeStatus>
@@ -149,23 +149,25 @@ export default function ProjectsSection({ onOpenCodex, playSfx }: ProjectsSectio
                     <CardBody>
                       <ArtifactKicker>{item.categoryBadge}</ArtifactKicker>
                       <ArtifactTitle>{item.title}</ArtifactTitle>
-                      <ArtifactDesc>{item.description}</ArtifactDesc>
+                      <ArtifactDesc>{item.summary}</ArtifactDesc>
 
                       <TechStackRow>
-                        {(item.stack || []).slice(0, 5).map((tech: string, i: number) => (
+                        {(item.stack || []).slice(0, 3).map((tech: string, i: number) => (
                           <TechChip key={i}>{tech}</TechChip>
                         ))}
                       </TechStackRow>
 
                       <CardActionsRow>
                         <CodexButton
-                          type="button"
-                          onClick={() => {
+                          href={`/projects/${key}`}
+                          onClick={(e) => {
+                            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                            e.preventDefault();
                             playSfx('warp');
-                            onOpenCodex(key);
+                            onOpenSpec(key);
                           }}
                         >
-                          <span>OPEN CODEX</span>
+                          <span>OPEN SPEC</span>
                           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         </CodexButton>
 

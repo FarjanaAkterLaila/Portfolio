@@ -7,7 +7,9 @@ export const PROJECT_CODEX: ProjectCodexMap = {
     category: 'mobile',
     categoryBadge: 'MOBILE PLATFORM // IOS & ANDROID',
     role: 'Mobile & Web Engineer • XIIA',
+    summary: 'A music and creator app where artists share exclusive content, host competitions, and reach fans on iOS and Android.',
     description: 'A global music ecosystem and creator monetization platform empowering artists to share exclusive content, host competitions, publish events, and connect directly with super-fans.',
+    image: '/projects/soundmade.jpg',
     stack: ['React Native', 'Expo', 'TypeScript', 'Apollo Client', 'GraphQL', 'REST APIs'],
     metrics: ['Live on Apple App Store & Google Play', 'Seamless Audio Feeds & Chat', '4.8 ★ User Rating'],
     highlights: [
@@ -27,7 +29,9 @@ export const PROJECT_CODEX: ProjectCodexMap = {
     category: 'web',
     categoryBadge: 'WEB PLATFORM // ENTERPRISE COMMERCE',
     role: 'Software Developer • XIIA',
+    summary: 'A marketplace where creators sell and rent digital content, with full Danish and English localization.',
     description: 'International digital content marketplace enabling creators to manage portfolios, monetize exclusive digital assets, and facilitate user rentals and purchases with cross-border localization.',
+    image: '/projects/kiibee.jpg',
     stack: ['Next.js', 'TypeScript', 'NestJS', 'PostgreSQL', 'Tailwind CSS', 'i18next'],
     metrics: ['Full Danish & English Internationalization', 'High-speed Server-Side Rendering (Next.js)', 'Enterprise Content Workflows'],
     highlights: [
@@ -45,7 +49,9 @@ export const PROJECT_CODEX: ProjectCodexMap = {
     category: 'web',
     categoryBadge: 'WEB & SAAS PLATFORM // OPERATIONS',
     role: 'Software Developer • XIIA',
+    summary: 'A restaurant dashboard for orders, payments, staff rosters, menus, and promotional vouchers.',
     description: 'A comprehensive operational dashboard platform designed for restaurant businesses to oversee order processing, POS payments, staff rosters, dynamic menu categorization, extras, and promotional vouchers.',
+    image: '/projects/foodime.jpg',
     stack: ['Next.js', 'React', 'TypeScript', 'PostgreSQL', 'Zustand', 'React Query'],
     metrics: ['Real-time Table & Order Management', 'Zero-latency UI Synchronization with Zustand', 'Multi-tenant Operations Support'],
     highlights: [
@@ -63,7 +69,9 @@ export const PROJECT_CODEX: ProjectCodexMap = {
     category: 'web',
     categoryBadge: 'FULL STACK WEB APPLICATION',
     role: 'Full Stack Developer',
+    summary: 'A music academy site with separate portals for students, instructors, and administrators.',
     description: 'A specialized music school web platform with role-based access for students, instructors, and academy administrators with secured course bookings, payment integration, and curriculum reviews.',
+    image: '/projects/rhymusol.jpg',
     stack: ['React', 'Tailwind CSS', 'Firebase Auth', 'Express.js', 'DaisyUI', 'MongoDB'],
     metrics: ['3 Dedicated Role Portals (User, Instructor, Admin)', 'Secure Role-based Route Protection', '100% Mobile & Desktop Responsive'],
     highlights: [
@@ -81,7 +89,9 @@ export const PROJECT_CODEX: ProjectCodexMap = {
     category: 'systems',
     categoryBadge: 'AI & NLP RESEARCH // PEER-REVIEWED PUBLICATION',
     role: 'Lead Author & Researcher',
+    summary: 'A Wiley paper on transformer models that detect sarcasm in formal and informal language.',
     description: 'Peer-reviewed academic research published in Wiley on transformer-based deep learning architectures analyzing linguistic variations for sarcasm detection in formal and informal communication.',
+    image: '/projects/sarcasm.jpg',
     stack: ['Python', 'Transformers', 'PyTorch', 'Hugging Face', 'NLP', 'Wiley Journal'],
     metrics: ['Published: 07 June 2026', 'Journal: Wiley - Applied Computational Intelligence and Soft Computing', 'Analyzed Formal vs Informal Language Variations'],
     highlights: [
