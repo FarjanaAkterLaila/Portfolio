@@ -14,6 +14,7 @@ import {
   NavLinks,
   NavLinkItem,
   NavText,
+  NavActiveDot,
   NavActions,
   AudioButton,
   AudioWaves,
@@ -95,6 +96,7 @@ export default function Navbar({
                 $active={activeView === item.id}
                 onClick={(e) => handleNavClick(e, item.id)}
               >
+                {activeView === item.id && <NavActiveDot aria-hidden="true" />}
                 <NavText>{item.label}</NavText>
               </NavLinkItem>
             ))}

@@ -10,6 +10,11 @@ const waveEqualize = keyframes`
   50% { height: 16px; }
 `;
 
+const navDot = keyframes`
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.75); }
+`;
+
 const fadeInDown = keyframes`
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -190,6 +195,16 @@ export const NavLinkItem = styled.a<{ $active?: boolean }>`
 
 export const NavText = styled.span`
   font-size: 0.85rem;
+`;
+
+export const NavActiveDot = styled.span`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary-cyan, #00ffc8);
+  box-shadow: 0 0 8px var(--primary-cyan, #00ffc8);
+  animation: ${navDot} 1.5s ease-in-out infinite;
+  flex-shrink: 0;
 `;
 
 export const NavActions = styled.div`
